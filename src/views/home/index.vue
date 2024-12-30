@@ -14,11 +14,18 @@
 </template>
 
 <script setup lang="ts">
+// 引入组合式API函数值声明周期函数
+import { onMounted } from "vue";
 import { getTime } from "@/utils/time";
 //引入用户相关的仓库,获取当前用户的头像、昵称
 import useUserStore from "@/store/modules/user";
 //获取存储用户信息的仓库对象
 let userStore = useUserStore();
+
+// 目前首页挂载完毕发请求获取用户信息
+onMounted(() => {
+  userStore.userInfo();
+});
 </script>
 
 <style scoped lang="scss">

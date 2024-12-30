@@ -1,4 +1,4 @@
-import { reqLogin } from "./../../api/user/index";
+import { reqLogin, reqUserInfo } from "./../../api/user";
 // 创建用户相关的小仓库
 import { defineStore } from "pinia";
 // 引入接口
@@ -17,6 +17,8 @@ let useUserStore = defineStore("User", {
     return {
       token: GET_TOKEN(), //用户唯一标识token
       menuRoutes: constantRoute, //仓库存储生成菜单需要的数组
+      username: "",
+      avatar: "",
     };
   },
   // 异步逻辑的地方
@@ -39,10 +41,19 @@ let useUserStore = defineStore("User", {
         return Promise.reject(new Error(result.data.message));
       }
     },
-    // 封装一个函数获取时间
-    // const getTime=()=>{
-
-    // }
+    // 获取用户信息方法
+    async userInfo() {
+      // 获取用户信息进行存储仓库当中[用户头像，名字]
+      let result = await reqUserInfo();
+      // 如果获取用户信息成功 存储信息
+      if (result.code == 200) {
+        this.username = result.data.username;
+        this.usernaavatarme = result.data.avatar;
+        return "ok";
+      } else {
+        return Promise.reject(new Error(result.message));
+      }
+    },
   },
   getters: {},
 });
